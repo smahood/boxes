@@ -20,12 +20,12 @@ export default function Box({ x, y, width, height, id }) {
   let [boxState, setBoxState] = useState(initialState);
 
   let divStyle = {
-    position: "relative",
     left: boxState.x + "px",
     top: boxState.y + "px",
     height: boxState.height + "px",
     width: boxState.width + "px",
     cursor: boxState.isMoving ? "move" : "default",
+    zIndex: boxState.id * 10,
   };
 
   function resizeBox(resizer) {

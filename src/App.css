@@ -1,4 +1,4 @@
-#whiteboard{
+#whiteboard {
   --whiteboard-margin: 20px;
   --whiteboard-z-index: 0;
 
@@ -14,17 +14,16 @@
   z-index: var(--whiteboard-z-index);
 }
 
-.whiteboard-box{
+.whiteboard-box {
   border: solid 1px black;
-  position: relative;
+  position: absolute;
   box-sizing: border-box;
 }
 
 .selected {
-  background-color: lightblue;
+  background-color: #add8e66e;
 }
 
 .resizer {
   position: absolute;
-
 }
