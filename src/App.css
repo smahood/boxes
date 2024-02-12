@@ -1,0 +1,30 @@
+#whiteboard{
+  --whiteboard-margin: 20px;
+  --whiteboard-z-index: 0;
+
+  position: absolute;
+  border: solid 2px black;
+  box-sizing: border-box;
+
+  left: var(--whiteboard-margin);
+  right: var(--whiteboard-margin);
+  top: var(--whiteboard-margin);
+  bottom: var(--whiteboard-margin);
+
+  z-index: var(--whiteboard-z-index);
+}
+
+.whiteboard-box{
+  border: solid 1px black;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.selected {
+  background-color: lightblue;
+}
+
+.resizer {
+  position: absolute;
+
+}
