@@ -138,18 +138,36 @@ function handleStopMoving({ selectionState }) {
   };
 }
 
-function handleResizing({ boxes, selectionState }) {
+function handleResizing({ boxes, updateBoxes, selectionState }) {
   return (newDimensions) => {
     let selectedBoxes = getSelectedBoxes({
       boxes: boxes,
       selectionState: selectionState,
     });
-    console.log("---");
-    console.log(calcBoundary(selectedBoxes));
-    // console.log(selectedBoxes);
-    // console.log("handleResizing");
-    console.log(newDimensions);
-    console.log(boundariesDiff(calcBoundary(selectedBoxes), newDimensions));
+    let boundary = calcBoundary(selectedBoxes);
+    let diff = boundariesDiff(boundary, newDimensions);
+    let resizedBoxes = selectedBoxes.map((box) => {
+      let percentWidth = box.width / boundary.width;
+      let percentHeight = box.height / boundary.height;
+      let percentOffsetX = (box.x - boundary.x) / boundary.width;
+      let percentOffsetY = (box.y - boundary.y) / boundary.height;
+      return {
+        ...box,
+        x:
+          box.x +
+          diff.x * percentOffsetX +
+          diff.x * (1 - percentOffsetX) +
+          diff.width * percentOffsetX,
+        y:
+          box.y +
+          +diff.y * percentOffsetY +
+          diff.y * (1 - percentOffsetY) +
+          diff.height * percentOffsetY,
+        width: box.width + diff.width * percentWidth,
+        height: box.height + diff.height * percentHeight,
+      };
+    });
+    updateBoxes(resizedBoxes);
   };
 }
 
@@ -168,6 +186,17 @@ function WhiteBoard() {
         id: id,
       },
     ]);
+  }
+
+  function updateResizedBoxes(resizedBoxes) {
+    let newBoxes = [...boxes];
+
+    resizedBoxes.map((box) => {
+      let index = boxes.findIndex((b) => b.id === box.id);
+      newBoxes[index] = box;
+    });
+
+    setBoxes(newBoxes);
   }
 
   return (
@@ -260,6 +289,7 @@ function WhiteBoard() {
       <SelectionBoundary
         handleResizing={handleResizing({
           boxes: boxes,
+          updateBoxes: updateResizedBoxes,
           selectionState: selectionState,
         })}
         selectedBoxes={getSelectedBoxes({

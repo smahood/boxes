@@ -34,6 +34,7 @@ export function calcBoundary(boxes) {
 
 export default function SelectionBoundary({ selectedBoxes , handleResizing}) {
   let boundary = calcBoundary(selectedBoxes);
+
   let divStyle = {
     left: 0,
     top: 0,
