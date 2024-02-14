@@ -9,8 +9,7 @@ export function Resizer({ dir, height, width, resize }) {
 
   let style = {
     backgroundColor: "lightgray",
-    left: dir.left(width) + "px",
-    top: dir.top(height) + "px",
+    translate: dir.left(width) + "px " + dir.top(height) + "px",
     height: dir.height + "px",
     width: dir.width + "px",
     border: "solid 1px black",

@@ -27,3 +27,13 @@
 .resizer {
   position: absolute;
 }
+
+.selection {
+  position: absolute;
+  background-color: #add8e66e;
+}
+
+.selection-boundary {
+  position: absolute;
+  border: dashed 1px lightgrey;
+}
