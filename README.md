@@ -14,4 +14,5 @@ To Run locally
 `npm install`
 `npm run dev`
 
+![boxes](https://github.com/smahood/boxes/assets/5705485/2ac10122-779e-46fa-9e10-074337c8c57f)
 
