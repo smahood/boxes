@@ -26,6 +26,15 @@
 
 .resizer {
   position: absolute;
+  background-color: lightgrey;
+}
+
+.resize-overlay {
+  width: 100vw;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  position: fixed;
 }
 
 .selection {
@@ -36,4 +45,9 @@
 .selection-boundary {
   position: absolute;
   border: dashed 1px lightgrey;
+  left: 0;
+  top: 0;
+  margin-left: -1px;
+  margin-top: -1px;
+  z-index: 999;
 }

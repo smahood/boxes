@@ -12,7 +12,7 @@ export const BOX_RESIZE_HANDLES = {
     width: V_RESIZE_DIM[0],
     height: V_RESIZE_DIM[1],
     resizeDims: ({ y, height, handleOffset }) => {
-      return { y: y + handleOffset[1], height: height - handleOffset[1] };
+      return { y: y + handleOffset[1], height: Math.max(height - handleOffset[1], 0) };
     },
   },
   e: {
@@ -22,7 +22,7 @@ export const BOX_RESIZE_HANDLES = {
     width: H_RESIZE_DIM[0],
     height: H_RESIZE_DIM[1],
     resizeDims: ({ x, width, handleOffset }) => {
-      return { x: x, width: width + handleOffset[0] };
+      return { x: x, width: Math.max(width + handleOffset[0], 0) };
     },
   },
   w: {
@@ -32,7 +32,7 @@ export const BOX_RESIZE_HANDLES = {
     width: H_RESIZE_DIM[0],
     height: H_RESIZE_DIM[1],
     resizeDims: ({ x, width, handleOffset }) => {
-      return { x: x + handleOffset[0], width: width - handleOffset[0] };
+      return { x: x + handleOffset[0], width: Math.max(width - handleOffset[0],0) };
     },
   },
   s: {
@@ -55,8 +55,8 @@ export const BOX_RESIZE_HANDLES = {
       return {
         x: x + handleOffset[0],
         y: y + handleOffset[1],
-        width: width - handleOffset[0],
-        height: height - handleOffset[1],
+        width: Math.max(width - handleOffset[0],0),
+        height: Math.max(height - handleOffset[1],0),
       };
     },
   },
@@ -68,9 +68,9 @@ export const BOX_RESIZE_HANDLES = {
     height: CORNER_RESIZE_DIM[1],
     resizeDims: ({ y, width, height, handleOffset }) => {
       return {
-        width: width + handleOffset[0],
+        width: Math.max(width + handleOffset[0],0),
         y: y + handleOffset[1],
-        height: height - handleOffset[1],
+        height: Math.max(height - handleOffset[1],0),
       };
     },
   },
@@ -83,8 +83,8 @@ export const BOX_RESIZE_HANDLES = {
     resizeDims: ({ x, width, height, handleOffset }) => {
       return {
         x: x + handleOffset[0],
-        width: width - handleOffset[0],
-        height: height + handleOffset[1],
+        width: Math.max(width - handleOffset[0],0),
+        height: Math.max(height + handleOffset[1],0),
       };
     },
   },
@@ -96,8 +96,8 @@ export const BOX_RESIZE_HANDLES = {
     height: CORNER_RESIZE_DIM[1],
     resizeDims: ({ width, height, handleOffset }) => {
       return {
-        width: width + handleOffset[0],
-        height: height + handleOffset[1],
+        width: Math.max(width + handleOffset[0],0),
+        height: Math.max(height + handleOffset[1],0),
       };
     },
   },

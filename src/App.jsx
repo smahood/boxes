@@ -258,7 +258,7 @@ function WhiteBoard() {
           setSelectionState({ ...selectionState, x: coords[0], y: coords[1] });
         }
       }}
-      onMouseUp={(e) => {
+      onMouseUp={() => {
         if (selectionState.isSelecting) {
           setSelectionState(
             handleStopSelecting({ selectionState: selectionState }),

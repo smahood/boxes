@@ -1,5 +1,5 @@
-import {BOX_RESIZE_HANDLES} from "./Constants.jsx";
-import {Resizer} from "./Resizer.jsx";
+import { BOX_RESIZE_HANDLES } from "./Constants.jsx";
+import { Resizer } from "./Resizer.jsx";
 
 function cssTransform({ x, y }) {
   return ["translate3d(", x, "px,", y, "px,", 0, ") "].join("");
@@ -16,8 +16,8 @@ function maxPoint(box1, box2) {
 }
 
 export function calcBoundary(boxes) {
-  if (boxes.length === 0){
-    return {x:0, y:0, width: 0, height: 0};
+  if (boxes.length === 0) {
+    return { x: 0, y: 0, width: 0, height: 0 };
   }
   return boxes.reduce((acc, curr) => {
     let [minX, minY] = minPoint(acc, curr);
@@ -31,18 +31,15 @@ export function calcBoundary(boxes) {
   });
 }
 
-
-export default function SelectionBoundary({ selectedBoxes , handleResizing}) {
+export default function SelectionBoundary({ selectedBoxes, handleResizing }) {
   let boundary = calcBoundary(selectedBoxes);
 
   let divStyle = {
-    left: 0,
-    top: 0,
+
     width: boundary.width + "px",
     height: boundary.height + "px",
     transform: cssTransform({ x: boundary.x, y: boundary.y }),
   };
-
 
   function resize(resizer) {
     return (handleOffset) => {
@@ -54,10 +51,11 @@ export default function SelectionBoundary({ selectedBoxes , handleResizing}) {
     };
   }
 
-  return <div className="selection-boundary" style={divStyle}>
-
-    {(selectedBoxes.length > 0) && Object.keys(BOX_RESIZE_HANDLES).map((k) => (
-        <Resizer
+  return (
+    <div className="selection-boundary" style={divStyle}>
+      {selectedBoxes.length > 0 &&
+        Object.keys(BOX_RESIZE_HANDLES).map((k) => (
+          <Resizer
             key={k}
             dir={BOX_RESIZE_HANDLES[k]}
             x={boundary.x}
@@ -65,10 +63,8 @@ export default function SelectionBoundary({ selectedBoxes , handleResizing}) {
             height={boundary.height}
             width={boundary.width}
             resize={resize}
-        />
-    ))}
-
-
-
-  </div>;
+          />
+        ))}
+    </div>
+  );
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { coordsDiff, mouseCoords } from "./InputDevices.jsx";
 
-export function Resizer({ dir, height, width, resize }) {
+export function Resizer({ dir, height, width, resize, x, y }) {
   const initialState = {
     isMouseOver: false,
     isResizing: false,
@@ -18,21 +18,31 @@ export function Resizer({ dir, height, width, resize }) {
 
   let [resizerState, setResizerState] = useState(initialState);
 
-  return (
+  const handleMouseMove = function (e) {
+    if (resizerState.isResizing) {
+      let newCoords = coordsDiff(resizerState.startMousePos, mouseCoords(e));
+
+      resize(dir)(newCoords);
+      setResizerState({
+        ...resizerState,
+        ...{
+          startMousePos: mouseCoords(e),
+        },
+      });
+      e.stopPropagation();
+    }
+  };
+
+  const handleMouseUp = function () {
+    setResizerState({ ...resizerState, ...{ isResizing: false } });
+  };
+
+  let resizeHandle = (
     <div
       className="resizer"
       style={style}
       onMouseOverCapture={() => {
         setResizerState({ ...resizerState, isMouseOver: true });
-      }}
-      onMouseOutCapture={() => {
-        setResizerState({
-          ...resizerState,
-          ...{
-            isMouseOver: false,
-            isResizing: false,
-          },
-        });
       }}
       onMouseDown={(e) => {
         e.preventDefault();
@@ -48,25 +58,6 @@ export function Resizer({ dir, height, width, resize }) {
           },
         });
       }}
-      onMouseUp={() =>
-        setResizerState({ ...resizerState, ...{ isResizing: false } })
-      }
-      onMouseMove={(e) => {
-        if (resizerState.isResizing) {
-          let newCoords = coordsDiff(
-            resizerState.startMousePos,
-            mouseCoords(e),
-          );
-
-          resize(dir)(newCoords);
-          setResizerState({
-            ...resizerState,
-            ...{
-              startMousePos: mouseCoords(e),
-            },
-          });
-        }
-      }}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -77,4 +68,21 @@ export function Resizer({ dir, height, width, resize }) {
       }}
     ></div>
   );
+
+  let resizeWrapper = (
+    <div
+      className={"resize-overlay"}
+      style={{
+        marginLeft: -x + "px",
+        marginTop: -y + "px",
+        paddingLeft: x + "px",
+        paddingTop: y + "px",
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+    >
+      {resizeHandle}
+    </div>
+  );
+  return resizerState.isResizing ? resizeWrapper : resizeHandle;
 }
