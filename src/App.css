@@ -5,6 +5,7 @@
   position: absolute;
   border: solid 2px black;
   box-sizing: border-box;
+  background-color: whitesmoke;
 
   left: var(--whiteboard-margin);
   right: var(--whiteboard-margin);
