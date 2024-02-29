@@ -83,6 +83,7 @@ function handleStartSelecting({ coords, selectionState }) {
 function handleSelecting({ coords, selectionState, boxes }) {
   return {
     ...selectionState,
+    mouseMoved: true,
     ...calcSelectionBoundary(
       [selectionState.startX, selectionState.startY],
       coords,
@@ -97,6 +98,7 @@ function handleStopSelecting({ selectionState }) {
   return {
     ...selectionState,
     isSelecting: false,
+    mouseMoved: false,
     startX: 0,
     startY: 0,
     width: 1,
@@ -112,6 +114,7 @@ function handleStartMoving({ coords, selectionState }) {
     x: coords[0],
     y: coords[1],
     isMoving: true,
+    mouseMoved: true,
   };
 }
 
@@ -129,6 +132,7 @@ function handleStopMoving({ selectionState }) {
   return {
     ...selectionState,
     isMoving: false,
+    // mouseMoved: false,
     startX: 0,
     startY: 0,
     x: 0,
@@ -254,17 +258,50 @@ function WhiteBoard() {
             coords: coords,
             selectionState: selectionState,
             boxes: boxes,
+            mouseMoved: true,
           });
-          setSelectionState({ ...selectionState, x: coords[0], y: coords[1] });
+          setSelectionState({
+            ...selectionState,
+            x: coords[0],
+            y: coords[1],
+            mouseMoved: true,
+          });
         }
       }}
-      onMouseUp={() => {
+      onMouseUp={(e) => {
+        let coords = mouseCoords(e);
         if (selectionState.isSelecting) {
-          setSelectionState(
-            handleStopSelecting({ selectionState: selectionState }),
+          let boxesAtCoords = boxesIntersectingBoundary(
+            calcSelectionBoundary(coords, coords),
+            boxes,
           );
-        }
-        if (selectionState.isMoving) {
+
+          if (
+            selectionState.selectedBoxIds.length === 0 &&
+            boxesAtCoords.length === 1
+          ) {
+            let newSelectionState = {
+              ...selectionState,
+              selectedBoxIds: boxesAtCoords.map((box) => box.id),
+            };
+            setSelectionState(
+              handleStopSelecting({ selectionState: newSelectionState }),
+            );
+          } else if (
+            selectionState.mouseMoved === false &&
+            selectionState.selectedBoxIds.length > 0 &&
+            boxesAtCoords.length === 0
+          ) {
+            let newSelectionState = { ...selectionState, selectedBoxIds: [] };
+            setSelectionState(
+              handleStopSelecting({ selectionState: newSelectionState }),
+            );
+          } else {
+            setSelectionState(
+              handleStopSelecting({ selectionState: selectionState }),
+            );
+          }
+        } else if (selectionState.isMoving) {
           setSelectionState(
             handleStopMoving({ selectionState: selectionState }),
           );
